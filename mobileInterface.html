@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project X Card (.asp version - Mobile Interface)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <style>
+ 
+         .myframe {
+            scrollbar-base-color: rgba(0, 0, 0, 0.2);
+	        scrollbar-arrow-color: #00FF00;
+	        scrollbar-track-color: #0000FF;
+	        scrollbar-face-color: #0000FF;
+	        scrollbar-highlight-color: #00FF00;
+	        scrollbar-shadow-color: #00FF00;
+	        scrollbar-3dlight-color: #0000FF;
+	        scrollbar-darkshadow-color: #0000FF;
+	        filter: chroma (color=#0000FF);
+        }
+        /* The device with borders */.smartphone
+        {
+ 
+        
+            position: relative;
+            /*width: 360px;
+            height: 640px;*/
+            width: 540px;
+            height: 960px;
+            margin: auto;
+            border: 16px black solid;
+            border-top-width: 60px;
+            border-bottom-width: 60px;
+            border-radius: 36px;
+        }
+        /* The horizontal line on the top of the device */.smartphone:before
+        {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 5px;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #333;
+            border-radius: 10px;
+        }
+        /* The circle on the bottom of the device */.smartphone:after
+        {
+            content: '';
+            display: block;
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            left: 50%;
+            bottom: -65px;
+            transform: translate(-50%, -50%);
+            background: #333;
+            border-radius: 50%;
+        }
+        /* The screen (or content) of the device */.smartphone .content
+        {
+           /* width: 360px;
+            height: 640px;*/
+            width: 540px;
+            height: 960px;
+            background: grey;
+        }
+        /* The button (or element) left on the device */.smartphone .leftbutton
+        {            
+            display: block;
+            left: 10%;   
+            bottom: -58px;
+            position: absolute;
+            z-index: 1;
+           }
+         /* The button (or element) left on the device */.smartphone .rightbutton
+        {            
+            display: block;
+            left: 65%;   
+            bottom: -58px;
+            position: absolute;
+            z-index: 1;
+            
+           }
+           
+           .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            }
+           
+           
+        .button4 {
+    background-color: black;
+    color: white;
+  }
+
+.button4:hover {background-color: #e7e7e7; color: black}
+    </style>
+
+    <script type="text/javascript">
+   function Cellphone_execute(button) 
+      {
+      if(button === 'left_button')
+      {
+  document.getElementById('cell_phone_screen').src ="index.html";
+   }
+   else if(button === 'right_button')
+   {
+   alert("right clicked.");
+   }
+   else
+   {
+   alert("Something went wrong.");
+   }
+   };
+    
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="smartphone" style="left: 0px; top: 0px">
+            <div class="content">
+                <iframe id="cell_phone_screen" name="cell_screen" class="myframe" src="img.html"  allowtransparency="true" style="width: 100%; border: none; height: 100%;" ></iframe>
+            </div>
+            <div class="leftbutton">
+                           <a href="index.html" target="cell_screen" class="button button4">
+                    Home</a>
+                <!--<button id="Button1" type="button" class="button button4" value="left_button" onclick="Cellphone_execute(value);">
+                    Home</button>-->
+            </div>
+            <div class="rightbutton">
+<!--                <button id="Button2" type="button" class="button button4" value="right_button" onclick="Cellphone_execute(value);">
+                    Go to</button>-->
+                                <a href="img.html" target="cell_screen" class="button button4">
+                    Go to</a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

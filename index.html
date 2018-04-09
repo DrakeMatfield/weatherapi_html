@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="css/fontawesome-all.min.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheet.css" rel="stylesheet" type="text/css" />
+    <!-- <link rel="manifest" href="/manifest.webmanifest">-->
+
+    <script src="JScript.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <!-- wrapper for styling purposes -->
+    <div class="wrapper">
+        <!-- Naviagation-->
+        <nav>
+            <ul class="main-nav">
+                <li><a class="active" href="index.html"><i class="fa fa-bars"></i> Menu</a></li>
+                <li>
+                    <div class="search-container">
+                      <label for="idZipcode"> </label>
+                        <input id="idZipcode" type="text" onkeyup="on_enter_pressed(event);" placeholder="Search..">
+                        <button type="button" onclick="On_Submit('idZipcode');">
+                            Enter</button><i class="fa fa-search"></i>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!--( <div> tag used to keep the fixed Main Navigation from overlapping.)  -->
+        <div class="main">
+            <!-- header Showcase -->
+            <header class="showcase">
+                <h1>
+                    So, What is the Weather Like?<i class="fas fa-cloud"></i></h1>
+                <label class="switch">
+                    <input id="id_notifer" type="checkbox" onchange="On_Notify('id_notifer');">
+                    <span id="id_notifer_span" class="slider round"></span><span id="id_notifer_label">Notification</span>
+                </label>
+            </header>
+            <!-- section (Web Application)-->
+            <section>
+                <div style="display:none;">
+                    <span id="id_WorkerNotifier"></span>
+                    <p>
+                        Count numbers:
+                        <output id="result">
+                        </output></p>
+                    <button onclick="startWorker()">
+                        Start Worker</button>
+                    <button onclick="stopWorker()">
+                        Stop Worker</button>
+                    <button onclick="on_SendMessage();">
+                        Send a request</button> 
+                    </div>
+                    <span id="id_results"></span>
+                    <br />
+                    <br />
+                    <br />
+               
+            </section>
+        </div>
+        <!-- footer -->
+        <footer>
+            <small>
+                <p>
+                    &copy; 2018 My Home</p>
+                <p>
+                    Follow me on <a href="https://www.facebook.com/drake.matfield" target="_blank">Facebook</a>
+                    and <a href="https://www.instagram.com/drakematfield/" target="_blank">Instagram</a></p>
+            </small>
+        </footer>
+    </div>
+</body>
+</html>
