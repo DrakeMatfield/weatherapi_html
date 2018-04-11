@@ -1,0 +1,123 @@
+        <nav>
+            <ul class="main-nav">
+                <li><a class="active" href="index.html"><i class="fa fa-bars"></i> Menu</a></li>
+                <li>
+                    <div class="search-container">
+                      <label for="idZipcode"> </label>
+                        <input id="idZipcode" type="text" onkeyup="on_enter_pressed(event);" placeholder="Search..">
+                        <button type="button" onclick="On_Submit('idZipcode');">
+                            Enter</button><i class="fa fa-search"></i>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        
+        
+        
+ ------------------------------------------------------------------------------       
+        function Display_Results(element_id, readableData) {
+  console.dir(readableData);
+  var str;
+  if (readableData.query.count > 0) {
+  
+  var current_date  = readableData.query.results.channel.lastBuildDate;
+  var current_creation_date = new Date(current_date);
+  var current_hi = readableData.query.results.channel.item.forecast[0].high;
+  var current_lo = readableData.query.results.channel.item.forecast[0].low;
+  var current_temp = readableData.query.results.channel.item.condition.temp;
+  var current_unit = readableData.query.results.channel.units.temperature;
+  var current_feels;
+  var current_condition_pic = parse_picture(readableData.query.results.channel.item.description); 
+  
+  //temp logs
+  console.log(current_date);
+  console.log(current_creation_date);
+  console.log(current_creation_date.getUTCHours());
+  console.log(current_creation_date.getHours());
+  
+  
+  var tempdatestring = "#MONTH #DATE, #TIME";
+  
+  tempdatestring = tempdatestring.replace("#MONTH" , get_month_name(current_creation_date.getUTCMonth()));
+  tempdatestring = tempdatestring.replace("#DATE" , current_creation_date.getUTCDate());
+  tempdatestring = tempdatestring.replace("#TIME" , get_time(current_creation_date));
+  
+    str = "<p>Date and Time: #DATE_TIME</p>"; 
+    //str = str.replace("#DATE_TIME", tempdatestring);
+    str = str.replace("#DATE_TIME", "April 8, 2:57 AM");
+
+    
+    str += "<p>High: #HIGH - Low: #LOW</p>"; 
+    str = str.replace("#HIGH", current_hi);  
+    str = str.replace("#LOW", current_lo);  
+  
+    str += "<p>Temperature: #TEMPERATURE #UNIT</p>";
+    str = str.replace("#TEMPERATURE", current_temp);
+    str = str.replace("#UNIT", current_unit);
+    
+    str += "#CURRENT_PICTURE_GIF";
+    str = str.replace("#CURRENT_PICTURE_GIF", current_condition_pic);
+         
+    var title = readableData.query.results.channel.item.title;
+    var location = readableData.query.results.channel.location;
+    var description = readableData.query.results.channel.item.description;
+    var temperature = readableData.query.results.channel.item.condition.temp;
+    var date = readableData.query.results.channel.item.condition.date;
+    var yahoo_pic = readableData.query.results.channel.image.url;
+    var yahoo_link = readableData.query.results.channel.image.link;
+
+    str += "<p>Location: #CITY, #REGION #COUNTRY </p>";
+    str = str.replace("#CITY", location.city);
+    str = str.replace("#REGION", location.region);
+    str = str.replace("#COUNTRY", location.country);
+
+    str += "<p>Temperature: #TEMPERATURE</p>";
+    str = str.replace("#TEMPERATURE", temperature);
+
+    str += "<p>Tilte: #TITLE</p>";
+    str = str.replace("#TITLE", title);
+
+    str += description;
+    str = str.replace("<![CDATA[", "");
+    str = str.replace("]]>", "");
+
+    str += "<p><strong>Drake's Thoughts!:</strong> #OPINION</p>";
+    str = str.replace("#OPINION", Analyzed_Results(temperature));
+
+    str += "<p><a href=\"#IMGLINK\" target=\"_blank\">img:<img src=#SRC class=\"test\"></a></p>";
+    str = str.replace("#SRC", yahoo_pic);
+    str = str.replace("#IMGLINK", yahoo_link);
+  }
+  else {
+    str = "<h2>Search Found Nothing!</h2>"
+  }
+  document.getElementById(element_id).innerHTML = str;
+}
+---------------------------------------------------------------------------------
+
+            var img_label = "<label for=\"id_condition_pic\">#CONDITIONS</label>";   
+            img_label = img_label.replace("#CONDITIONS", current_condition);
+            
+---------------------------------------------------------------------------------
+    
+            
+            
+            //    str += "<p>Temperature: #TEMPERATURE</p>";
+//    str = str.replace("#TEMPERATURE", temperature);
+
+
+---------------------------------------------------------------------------------
+
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
