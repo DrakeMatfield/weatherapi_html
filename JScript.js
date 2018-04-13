@@ -1,227 +1,73 @@
-﻿ // <script src="https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='64129')&format=json&callback=callbackFunction"></script>
-
-function Display_Results(element_ids, readableData) {
-  console.dir(readableData);
+ // <script src="https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='64129')&format=json&callback=callbackFunction"></script>
+'use strict'
+function Display_Results(element_ids, weather) {
+  console.dir(weather);
   var str;
-  var forcast;
-  if (readableData.query.count > 0) {
-  
-  var current_date  = readableData.query.results.channel.lastBuildDate;
-  var current_creation_date = new Date(current_date);
-  var current_hi = readableData.query.results.channel.item.forecast[0].high;
-  var current_lo = readableData.query.results.channel.item.forecast[0].low;
-  var current_temp = readableData.query.results.channel.item.condition.temp;
-  var current_temp_unit = readableData.query.results.channel.units.temperature;
-  var current_condition_pic = parse_picture(readableData.query.results.channel.item.description); 
-  var location = readableData.query.results.channel.location;
-  
-  //temp logs
-  console.log(current_date);
-  console.log(current_creation_date);
-  console.log(current_creation_date.getUTCHours());
-  console.log(current_creation_date.getHours());
-  
-  
-  var tempdatestring = "#MONTH #DATE, #TIME";
-  
-  tempdatestring = tempdatestring.replace("#MONTH" , get_month_name(current_creation_date.getUTCMonth()));
-  tempdatestring = tempdatestring.replace("#DATE" , current_creation_date.getUTCDate());
-  tempdatestring = tempdatestring.replace("#TIME" , get_time(current_creation_date));
- 
-    str = "<p>#DATE_TIME</p>"; 
+  var forecast;
+
+try{
+    str = "<p class=\"date_time_display\">#DATE_TIME</p>";
     //str = str.replace("#DATE_TIME", tempdatestring);
-    str = str.replace("#DATE_TIME", "April 8, 2:57 AM");
-    
-    str += "<p class=\"dropmargin\" >High: #HIGH - Low: #LOW</p>"; 
-    str = str.replace("#HIGH", current_hi);  
-    str = str.replace("#LOW", current_lo);  
-  
+    str = str.replace("#DATE_TIME", (weather.get_current_weather_timestamp("#MONTH #DATE, #TIME")));
+
+    str += "<p class=\"dropmargin\" >High: #HIGH - Low: #LOW</p>";
+    str = str.replace("#HIGH", weather.Forecasted_HIGH);
+    str = str.replace("#LOW", weather.Forecasted_LOW);
+
     str += "<p class=\"temperature\">#TEMPERATURE<sup><small>#UNIT</small></sup></p>";
-    str = str.replace("#TEMPERATURE", current_temp);
-    str = str.replace("#UNIT", get_temperture_unit(current_temp_unit));
-    
+    str = str.replace("#TEMPERATURE", weather.Condition.Temperature);
+    str = str.replace("#UNIT", weather.Units.Temperature_units);
+
     str += "#CURRENT_PICTURE_GIF";
-    str = str.replace("#CURRENT_PICTURE_GIF", current_condition_pic);
-         
-    var title = readableData.query.results.channel.item.title;
-    var description = readableData.query.results.channel.item.description;
-    var temperature = readableData.query.results.channel.item.condition.temp;
-    var date = readableData.query.results.channel.item.condition.date;
-    var yahoo_pic = readableData.query.results.channel.image.url;
-    var yahoo_link = readableData.query.results.channel.image.link;
+    str = str.replace("#CURRENT_PICTURE_GIF", weather.Card_Pic);
 
-    str += "<p>Location:<hr/> #CITY, #REGION #COUNTRY</p>";
-    str = str.replace("#CITY", location.city);
-    str = str.replace("#REGION", location.region);
-    str = str.replace("#COUNTRY", location.country);
- 
+    str += "<p class=\"remMar\">Location:</p><hr/><p class=\"date_time_display\">#LOCATION</p>";
+    str = str.replace("#LOCATION", weather.Location.get_Location());
+
+   str += "<p class=\"opinion\"><strong>Drake's Thoughts!:</strong>#OPINION</p>";
+   str = str.replace("#OPINION", Drake_opinion_basedon_temperature(weather.Condition.Temperature));
+
     forecast = "<p>#TITLE</p>";
-    forecast = forecast.replace("#TITLE", title);
+    forecast = forecast.replace("#TITLE", weather.Title);
 
-    forecast += description;
-    forecast = forecast.replace("<![CDATA[", "");
-    forecast = forecast.replace("]]>", "");
+    forecast += weather.Description_HTML;
 
-    forecast += "<p><strong>Drake's Thoughts!:</strong> #OPINION</p>";
-    forecast = forecast.replace("#OPINION", Analyzed_Results(temperature));
+    forecast += "<p><a href=\"#IMGLINK\" target=\"_blank\"><img src=#SRC class=\"test\"></a></p>";
+    forecast = forecast.replace("#SRC", weather.Tag[0]);
+    forecast = forecast.replace("#IMGLINK", weather.Tag[1]);
 
-    forecast += "<p><a href=\"#IMGLINK\" target=\"_blank\">img:<img src=#SRC class=\"test\"></a></p>";
-    forecast = forecast.replace("#SRC", yahoo_pic);
-    forecast = forecast.replace("#IMGLINK", yahoo_link);
-  }
-  else {
-    str = "<h2>Search Found Nothing!</h2>"
-  }
+  // set background color
+  background_color_basedon_SunRise_SunDown(weather.Sunrise, weather.Sunset, weather.Current_Date_Time.Time);
   
-  //document.getElementById(element_ids[0]).value = location.city + ", "+ location.region;
+  //set_background_color('bbb', 'lightskyblue');
+  //set_background_Pic('id_main','images/Sky/te00006_sky.png');
+ 
+  document.getElementById(element_ids[0]).value = weather.Location.City + ", "+ weather.Location.Region;
   document.getElementById(element_ids[1]).innerHTML = str;
   document.getElementById(element_ids[2]).innerHTML = forecast;
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+}
+catch(err){
+console.error(err.message);
+}
 }
 
-function get_temperture_unit(units_used)
-{
-    var temp_unit;
-    if(units_used === 'F')
-    {
-        temp_unit = "&#8457";
-    }
-    else
-    {
-        temp_unit = units_used;
-    }
-    return temp_unit;
+function set_background(element_id, background_color)
+{   //rgba(201, 76, 76, 0.3)
+    document.getElementById(element_id).style.backgroundColor =  "rgba(201, 76, 76, 0.3)";
 }
 
-function get_month_name(month_number){
-    var month = new Array(12);
-    month[0] = "January";
-    month[1] = "February";
-    month[2] = "March";
-    month[3] = "April";
-    month[4] = "May";
-    month[5] = "June";
-    month[6] = "July";
-    month[7] = "August";
-    month[8] = "September";
-    month[9] = "October";
-    month[10] = "November";
-    month[11] = "December";
-    return month[month_number];
+function set_background_color(element_id, background_color)
+{   //rgba(201, 76, 76, 0.3)
+    document.getElementById(element_id).style.backgroundColor = background_color; //"rgba(201, 76, 76, 0.3)";// background_color;
 }
 
-function get_time(date_object) {
-console.log(date_object.getUTCHours());
-console.log(date_object.getUTCMinutes());
-    var hours = Number(date_object.getUTCHours());
-    var minutes = Number(date_object.getUTCMinutes());
-    var sun = {};
-        
-    if(hours > 12)
-    {
-        sun = "PM";
-        hours =  hours - 12;
-    }
-    else if(hours === 0)
-    {
-        sun = "AM";
-        hours = 12;    
-    }
-    else
-    {
-        sun = "AM";
-    }
-    
-    var time_string = "#HOUR : #MINUTES #AM_PM";
-    time_string = time_string.replace("#HOUR", hours);
-    time_string = time_string.replace("#MINUTES", minutes);
-    time_string = time_string.replace("#AM_PM", sun);
-
-    return time_string;
-}
-
-function parse_current_conditions(description_PARSE)
-{
-    // Remove current condition from string.
-    description_PARSE = description_PARSE.replace("Current Conditions:", "");
-
-    var firstTag;
-    var secondTag;
-    var element;
-
-    for(var x=0; x<4; x++)
-    {
-        // Remove first tag 
-        firstTag = description_PARSE.indexOf('<');
-        secondTag = description_PARSE.indexOf('>');
-
-        element = description_PARSE.substring(firstTag, secondTag + 1);
-        description_PARSE = description_PARSE.replace(element,"");
-    }    
-
-    // Find index of next tag.
-    firstTag = description_PARSE.indexOf('<');
-
-    var res = description_PARSE.substring(0, firstTag).trim();
-    return res;
-}
-
-
-function parse_picture(description_PARSE)
-{
-   description_PARSE = description_PARSE.replace("<![CDATA[", "");
-   description_PARSE = description_PARSE.replace("]]>", "");
-   
-   var start;
-   var end;
-   var res;
-      
-   if(description_PARSE.startsWith('<img'))
-   {
-       start = 0;
-       end = description_PARSE.indexOf('>');
-       res = description_PARSE.substring(start, end +1);
-       
-       res = res.replace("<img ", "<img id=\"id_condition_pic\" class=\"imgcondition\"");
-       var img_tag = res.toString();
-       
-       var current_condition_index = description_PARSE.indexOf("Current Conditions:");
-       if(current_condition_index != -1)
-       {
-            var current_condition; 
-            // Remove img from string.
-            var temp_img = description_PARSE.substring(start, end + 1);
-            description_PARSE = description_PARSE.replace(temp_img, "");
-            
-            current_condition = parse_current_conditions(description_PARSE);
-
-             var picture_card = "<div id=\"id_condition_fig\" class=\"fig\">" + 
-                img_tag  + "<p><span>"+current_condition+"</span></p></div>";
-        
-            res = picture_card;
-        }
-   }
-   else
-   {
-       res = "Couldn't find the picture.";
-       console.log(res);
-   } 
-      
-   return res;
-}
-
-function Analyzed_Results(temperature) {
-  var text;
-
-  if (Number(temperature) < 40) {
-    text = "You should wear a coat; because it's " + temperature + " degress right now.";
-  }
-  else if (Number(temperature) < 80) {
-    text = "You should wear a jacket; because it's " + temperature + " degress right now.";
-  }
-  else {
-    text = "You should wear short; because it's " + temperature + " degress right now.";
-  }
-  return text;
+function set_background_Pic(element_id, background_image)
+{ 
+    document.getElementById(element_id).style.backgroundImage = "url("+background_image+")";
+    document.getElementById(element_id).style.backgroundSize = 'cover';
+    //document.getElementById(element_id).style.backgroundAttachment  = 'fixed';
 }
 
 // Just in case I need to set it to Synchronous
@@ -231,26 +77,21 @@ function On_Submit(element_id) {
   var str = "https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='#ZIPCODE')&format=json";
   var url = str.replace('#ZIPCODE', zipcode);
 
-  var xmlhttp = new XMLHttpRequest();
+  Api_Call(url);
 
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      callbackFunction(this.responseText);
-    }
-    if (this.readyState == 4 && this.status >= 400 ) {
-    var code = this.status;
-    this.abort();// this line might not be needed.
-    //Status Code Error
-    callbackFunctionOnError(new Error("There was an error getting the weather for you. ( status code: " + code + ")"));
-   }
-  };
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
 }
 
+// Remember to remove console.dir for optimization.
 var callbackFunction = function(data) {
   var readableData = JSON.parse(data);
-  Display_Results(['idZipcode' ,'id_results', 'id_forecast_results'], readableData);
+  if (readableData.query.count > 0) {
+       console.dir(readableData);
+       Display_Results(['idZipcode', 'id_results', 'id_forecast_results'], ParseWeatherYahoo(readableData));
+  }
+  else
+  {
+       document.getElementById('id_results').innerHTML = "<h2>Search Found Nothing!</h2>";
+  }
 }
 
 var callbackFunctionOnError = function(error) {
@@ -379,3 +220,4 @@ function notifyMe() {
 
   return successful;
 }﻿﻿﻿﻿﻿
+﻿ 

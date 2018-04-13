@@ -1,0 +1,146 @@
+           <section>
+                    <div style="display:none;">
+                        <span id="id_WorkerNotifier"></span>
+                        <p>
+                            Count numbers:
+                            <output id="result">
+                        </output></p>
+                        <button onclick="startWorker()">
+                        Start Worker</button>
+                        <button onclick="stopWorker()">
+                        Stop Worker</button>
+                        <button onclick="on_SendMessage();">
+                        Send a request</button>
+                    </div>
+                   
+                    <br />
+                    <br />
+                    <br />
+                </section>
+                
+                
+                
+                
+                   console.log(current_date);
+   console.log(current_date.match(/\b[0-3][0-9]\s\w{3}\s\d{4}\b\b/g));
+   
+   var current_time = current_date.match(/\b[0-1][0-9]:[0-5][0-9]\s+[AP]M/g);
+   console.log(current_time);
+   
+    var current_creation_date = new Date(current_date);
+    
+    
+    
+    
+    function get_current_weather_timestamp(dateORtime){
+    
+    var timestamp = "#MONTH #DATE, #TIME";
+    var current_month  =   get_month_name_by_abv(dateORtime);
+    var current_time = get_time(dateORtime);
+    var current_day = get_date(dateORtime);
+    
+   timestamp=  timestamp.replace("#MONTH", current_month );
+     timestamp=   timestamp.replace("#TIME", current_time);
+     timestamp=   timestamp.replace("#DATE", current_day);
+
+    return timestamp;
+}
+
+
+
+function get_month_name_by_abv(dateORtime)
+{
+ var current_timestamp = dateORtime.match(/\b[0-3][0-9]\s\w{3}\s\d{4}\b\b/g);
+    
+    var month_abv = current_timestamp[0].substr(3,3);
+
+    switch(month_abv) {
+    case 'Jan':
+       month_abv = "January";
+        break;
+            case 'Feb':
+        month_abv ="February";
+        break;
+            case 'Mar':
+      month_abv ="March";
+        break;
+            case 'Apr':
+        month_abv = "April";
+        break;
+            case 'May':
+       month_abv ="May";
+        break;
+                    case 'Jun':
+        month_abv = "June";
+        break;
+            case 'Jul':
+        month_abv = "July";
+        break;
+            case 'Aug':
+         month_abv ="August";
+        break;
+            case 'Sep':
+         month_abv = "September";
+        break;
+                    case 'Oct':
+         month_abv = "October";
+        break;
+            case 'Nov':
+         month_abv =  "November";
+        break;
+            case 'Dec':
+         month_abv = "December";
+        break;
+    default:
+          month_abv = null;
+}
+    
+return month_abv;
+
+}
+
+
+    forecast += description;
+    forecast = forecast.replace("<![CDATA[", "");
+    forecast = forecast.replace("]]>", "");
+
+
+//    var current_condition_index = description_PARSE.indexOf("Current Conditions:");
+//    if (current_condition_index != -1) {
+//      var current_condition;
+//      // Remove img from string.
+//      var temp_img = description_PARSE.substring(start, end + 1);
+//      description_PARSE = description_PARSE.replace(temp_img, "");
+
+//      current_condition = parse_current_conditions(description_PARSE);
+
+//      var picture_card = "<div id=\"id_condition_fig\" class=\"fig\">" +
+//        img_tag + "<p><span>" + current_condition + "</span></p></div>";
+
+//      res = picture_card;
+//    }
+
+
+function parse_current_conditions(description_PARSE) {
+  // Remove current condition from string.
+  description_PARSE = description_PARSE.replace("Current Conditions:", "");
+
+  var firstTag;
+  var secondTag;
+  var element;
+
+  for (var x = 0; x < 4; x++) {
+    // Remove first tag 
+    firstTag = description_PARSE.indexOf('<');
+    secondTag = description_PARSE.indexOf('>');
+
+    element = description_PARSE.substring(firstTag, secondTag + 1);
+    description_PARSE = description_PARSE.replace(element, "");
+  }
+
+  // Find index of next tag.
+  firstTag = description_PARSE.indexOf('<');
+
+  var res = description_PARSE.substring(0, firstTag).trim();
+  return res;
+}
