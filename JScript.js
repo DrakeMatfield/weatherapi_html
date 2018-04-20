@@ -37,9 +37,9 @@ try{
     forecast = forecast.replace("#IMGLINK", weather.Tag[1]);
 
   // set background color
-  background_color_basedon_SunRise_SunDown(weather.Sunrise, weather.Sunset, weather.Current_Date_Time.Time);
+  var backcolor = background_color_basedon_SunRise_SunDown(weather.Sunrise, weather.Sunset, weather.Current_Date_Time.Time);
   
-  //set_background_color('bbb', 'lightskyblue');
+  set_background_color('bbb', backcolor);
   //set_background_Pic('id_main','images/Sky/te00006_sky.png');
  
   document.getElementById(element_ids[0]).value = weather.Location.City + ", "+ weather.Location.Region;
@@ -56,11 +56,14 @@ console.error(err.message);
 function set_background(element_id, background_color)
 {   //rgba(201, 76, 76, 0.3)
     document.getElementById(element_id).style.backgroundColor =  "rgba(201, 76, 76, 0.3)";
+    document.getElementById('bb').style.backgroundColor =  "rgba(201, 76, 76, 0.3)";
+
 }
 
 function set_background_color(element_id, background_color)
 {   //rgba(201, 76, 76, 0.3)
     document.getElementById(element_id).style.backgroundColor = background_color; //"rgba(201, 76, 76, 0.3)";// background_color;
+    document.getElementById('bb').style.backgroundColor =  background_color;
 }
 
 function set_background_Pic(element_id, background_image)

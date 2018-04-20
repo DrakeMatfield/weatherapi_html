@@ -12,6 +12,9 @@ html, body
     line-height: 1.5;
     overflow-wrap: break-word;
     background: grey;
+  
+   
+
 }
 
 html
@@ -61,7 +64,7 @@ p
 {
     font-size: 8.5em;
     line-height: 1em;
-    margin: 0 30px 80px 0;
+    margin: 0 35px 80px 0;
     display: inline-block;
  }
 
@@ -258,7 +261,7 @@ hr {
 
 .forecastStyle
 {
-    font-size: 1.2em;
+   /* font-size: 1.2em;*/
 }
 
 .date_time_display
@@ -395,7 +398,7 @@ nav .search-container button:hover
 
 footer
 {
-      position: fixed;
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -405,6 +408,7 @@ footer
     background-color: #333;
     margin: 0px 0px 0px 0px;
     padding: 6px 0px 6px 0px;
+    display: none;
 }
 
 .footer
@@ -419,6 +423,8 @@ footer
     background-color: #333;
     margin: 0px 0px 0px 0px;
     padding: 6px 0px 6px 0px;
+    display: none;
+    ;
 }
 
 /* used for switches */
