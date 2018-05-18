@@ -135,8 +135,6 @@ function get_current_weather_timestamp(dateORtime){
     timestamp.replace("#MONTH", current_month );
     timestamp.replace("#TIME", current_time);
     timestamp.replace("#DATE", current_day);
-
-    
 }
 
 
