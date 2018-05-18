@@ -1,3 +1,3 @@
 Weather API create as an asignment for class.
 
-testing website ur: http://www.drakeandeumeaka.info/testweatherapi
+testing website url: http://www.drakeandeumeaka.info/testweatherapi
