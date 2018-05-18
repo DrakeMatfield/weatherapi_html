@@ -71,7 +71,10 @@ function parse_picture(description_PARSE, current_Condition_text) {
   var end;
   var res;
 
-  if (description_PARSE.startsWith('<img')) {
+
+
+
+  if (startWith_IMG(description_PARSE,'<img')) {
     start = 0;
     end = description_PARSE.indexOf('>');
     res = description_PARSE.substring(start, end + 1);
@@ -88,4 +91,9 @@ function parse_picture(description_PARSE, current_Condition_text) {
   }
 
   return res;
+}
+
+function startWith_IMG(str, match) {
+var imgTag =str.substring(0, 4);
+return (imgTag === match);
 }

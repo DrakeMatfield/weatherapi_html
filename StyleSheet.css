@@ -12,10 +12,7 @@ html, body
     line-height: 1.5;
     overflow-wrap: break-word;
     background: grey;
-  
-   
-
-}
+ }
 
 html
 {
@@ -44,10 +41,6 @@ a:active, a:hover
 {
     outline-width: 0;
 }
-
-
-
-
 
 /*set wrapper for when using grids to style*/
 
@@ -198,7 +191,7 @@ p
 
 /* Style the buttons inside the tab */
 .tab button {
-    background-color: inherit;
+    background-color: #333333;
     float: left;
     border: none;
     outline: none;
@@ -413,7 +406,7 @@ footer
 
 .footer
 {
-      position: fixed;
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -434,7 +427,7 @@ footer
     display: inline-block;
     width: 60px;
     height: 34px;
-    margin-top: 5px;
+    margin-top: 20px;
    /*  margin-right: 150px;
     float:right;*/
     

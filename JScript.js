@@ -197,7 +197,6 @@ function notifyMe() {
     successful = true;
 
   }
-
   // Otherwise, we need to ask the user for permission
   else if (Notification.permission !== 'denied') {
     Notification.requestPermission(function(permission) {
